@@ -58,7 +58,7 @@
 (overcloud) [stack@undercloud ~]$ qemu-img convert -f qcow2 -O raw cirros-0.4.0-x86_64-disk.img cirros-0.4.0-x86_64-disk.raw
 
 # 创建 cirros glance image
-(overcloud) [stack@undercloud ~]$ openstack image create cirros   --file cirros-0.4.0-x86_64-disk.raw   --disk-format qcow2 --container-format bare
+(overcloud) [stack@undercloud ~]$ openstack image create cirros   --file cirros-0.4.0-x86_64-disk.raw   --disk-format raw --container-format bare
 
 # 创建 instance test-instance
 (overcloud) [stack@undercloud ~]$ openstack server create test-instance --network private --flavor m1.nano --image cirros
