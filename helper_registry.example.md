@@ -13,6 +13,29 @@ EOF
 -rw-r--r--. 1 root root 5199344504 Jan 20 12:48 osp16.1-poc-registry-2021-01-15.tar.gz
 -rw-r--r--. 1 root root    9801251 Jan 20 12:46 podman-docker-registry-v2.image.tgz
 
+# 拷贝 iso 文件 到 helper 
+[root@helper ~]# ls -l *.iso 
+-rw-r--r--. 1 root root 8436842496 Jan 20 14:15 rhel-8.2-x86_64-dvd.iso
+
+# 加载 iso 文件 
+[root@helper ~]# mount -o loop rhel-8.2-x86_64-dvd.iso /mnt 
+mount: /mnt: WARNING: device write-protected, mounted read-only.
+
+# 创建 local.repo 
+cat > /etc/yum.repos.d/local.repo << EOF
+[baseos]
+name=baseos
+baseurl=file:///mnt/BaseOS
+enabled=1
+gpgcheck=0
+
+[appstream]
+name=appstream
+baseurl=file:///mnt/AppStream
+enabled=1
+gpgcheck=0
+EOF
+
 # 安装软件 container registry 所需软件
 yum -y install podman httpd httpd-tools wget jq
 
@@ -22,11 +45,11 @@ mkdir -p /opt/registry/{auth,certs,data}
 # 解压缩 osp16.1-poc-registry-2021-01-15.tar.gz 文件
 tar zxvf osp16.1-poc-registry-2021-01-15.tar.gz -C /
 
-# 在本地建立证书信任
+# 在 helper 本地建立证书信任
 cp /opt/registry/certs/domain.crt /etc/pki/ca-trust/source/anchors/
 update-ca-trust extract
 
-# 开放防火墙端口
+# 开放 helper container registry 所需防火墙端口
 firewall-cmd --add-port=5000/tcp --zone=internal --permanent
 firewall-cmd --add-port=5000/tcp --zone=public   --permanent
 firewall-cmd --reload
@@ -46,7 +69,7 @@ podman run --name poc-registry -d -p 5000:5000 \
 localhost/docker-registry:latest 
 EOF
 
-# 添加可执行权限
+# 为脚本添加可执行权限
 chmod +x /usr/local/bin/localregistry.sh
 
 # 启动 registry 
