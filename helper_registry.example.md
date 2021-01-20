@@ -1,5 +1,18 @@
 ### 在 helper 虚拟机里安装 container registry
 ```
+# 添加 /etc/hosts 记录
+HOST_IP=$( ip a s dev ens3 | grep -E "inet " | awk '{print $2}' | awk -F'/' '{print $1}' )
+[root@undercloud repos]# > /etc/yum.repos.d/osp.repo 
+cat >> /etc/hosts << EOF
+${HOST_IP} helper.example.com
+EOF
+
+# 拷贝 podman-docker-registry-v2.image.tgz 和 
+# osp16.1-poc-registry-2021-01-15.tar.gz 到 helper 所在的主机
+[root@helper ~]# ls -l *.tar.gz *.tgz
+-rw-r--r--. 1 root root 5199344504 Jan 20 12:48 osp16.1-poc-registry-2021-01-15.tar.gz
+-rw-r--r--. 1 root root    9801251 Jan 20 12:46 podman-docker-registry-v2.image.tgz
+
 # 安装软件 container registry 所需软件
 yum -y install podman httpd httpd-tools wget jq
 
@@ -16,7 +29,6 @@ update-ca-trust extract
 # 开放防火墙端口
 firewall-cmd --add-port=5000/tcp --zone=internal --permanent
 firewall-cmd --add-port=5000/tcp --zone=public   --permanent
-firewall-cmd --add-service=http  --permanent
 firewall-cmd --reload
 
 # 在 helper 上导入 docker-registry 镜像
