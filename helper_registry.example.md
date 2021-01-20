@@ -100,4 +100,9 @@ EOF
 # 访问 helper.example.com 的 registry catalog
 curl https://helper.example.com:5000/v2/_catalog
 
+# 设置默认启用图形化界面
+systemctl set-default graphical.target
+
+# 切换到图形界面
+systemctl isolate graphical
 ```
