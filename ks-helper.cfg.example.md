@@ -14,7 +14,7 @@ bootloader --location=mbr --append="rhgb quiet crashkernel=auto"
 zerombr
 clearpart --all --initlabel
 autopart
-network --device=ens3 --hostname=helper.example.com --bootproto=static --ip=192.168.8.20 --netmask=255.255.255.0 --gateway=192.168.8.1 --nameserver=192.168.8.1
+network --device=ens3 --hostname=helper.example.com --bootproto=static --ip=192.168.10.42 --netmask=255.255.255.0 --gateway=192.168.10.1 --nameserver=119.29.29.29 --vlanid 10
 auth --passalgo=sha512 --useshadow
 selinux --enforcing
 firewall --enabled --ssh
@@ -26,3 +26,5 @@ kexec-tools
 %end
 EOF
 ```
+
+vlan 配置参见：https://access.redhat.com/solutions/25133
