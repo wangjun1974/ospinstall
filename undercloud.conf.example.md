@@ -31,6 +31,7 @@ cidr = 192.0.2.0/24
 dhcp_start = 192.0.2.5
 dhcp_end = 192.0.2.24
 inspection_iprange = 192.0.2.100,192.0.2.120
-gateway = 192.0.2.254
+gateway = 192.0.2.1
+masquerade = true
 EOF
 ```
