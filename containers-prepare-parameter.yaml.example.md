@@ -56,7 +56,7 @@ parameter_defaults:
       ceph_grafana_namespace: helper.example.com:5000/rhceph
       ceph_grafana_tag: 4
       ceph_image: rhceph-4-rhel8
-      ceph_namespace: registry.redhat.io/rhceph
+      ceph_namespace: helper.example.com:5000/rhceph
       ceph_node_exporter_image: ose-prometheus-node-exporter
       ceph_node_exporter_namespace: helper.example.com:5000/openshift4
       ceph_node_exporter_tag: v4.1
