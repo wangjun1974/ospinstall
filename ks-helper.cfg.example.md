@@ -1,7 +1,7 @@
 ### 可以从网址生成 https://access.redhat.com/labsinfo/kickstartconfig
 可以从网址生成 https://access.redhat.com/labsinfo/kickstartconfig
 ```
-cat > /tmp/ks.cfg <<'EOF'
+cat > /tmp/ks-helper.cfg <<'EOF'
 lang en_US
 keyboard us
 timezone Asia/Shanghai --isUtc
